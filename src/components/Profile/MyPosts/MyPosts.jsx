@@ -1,15 +1,17 @@
-import { useRef } from "react";
+import {
+    updateNewPostTextActionCreator,
+    addPostActionCreator,
+} from "../../../redux/state";
 import styles from "./MyPosts.module.scss";
 import { Post } from "./Post/Post";
 
-export const MyPosts = ({
-    postsData,
-    addPost,
-    newPostData,
-    changeNewPostData,
-}) => {
+export const MyPosts = ({ postsData, dispatch, newPostData }) => {
     const onChangeNewPost = e => {
-        changeNewPostData(e.target.value);
+        dispatch(updateNewPostTextActionCreator(e.target.value));
+    };
+
+    const onAdd = () => {
+        dispatch(addPostActionCreator());
     };
 
     return (
@@ -19,7 +21,7 @@ export const MyPosts = ({
                 <div>
                     <textarea onChange={onChangeNewPost} value={newPostData} />
                 </div>
-                <button onClick={addPost}>Add post</button>
+                <button onClick={onAdd}>Add post</button>
                 <button>Remove</button>
             </div>
             <div className={styles.posts}>

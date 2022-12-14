@@ -6,11 +6,7 @@ import { Dialogs } from "./../Dialogs/Dialogs";
 import { Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 
-const App = ({
-    state: { dialogsPage, profilePage },
-    addPost,
-    changeNewPostData,
-}) => {
+const App = ({ state: { dialogsPage, profilePage }, dispatch }) => {
     return (
         <BrowserRouter>
             <div className={"appContainer"}>
@@ -22,8 +18,7 @@ const App = ({
                             element={
                                 <Profile
                                     state={profilePage}
-                                    addPost={addPost}
-                                    changeNewPostData={changeNewPostData}
+                                    dispatch={dispatch}
                                 />
                             }
                             path="/profile"
