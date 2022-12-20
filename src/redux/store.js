@@ -1,12 +1,5 @@
-const ADD_POST = "ADD_POST";
-const UPDATE_NEW_POST_TEXT = "UPDATE_NEW_POST_TEXT";
-
-export const addPostActionCreator = () => ({ type: ADD_POST });
-
-export const updateNewPostTextActionCreator = text => ({
-    type: UPDATE_NEW_POST_TEXT,
-    newText: text,
-});
+import { dialogsReducer } from "./dialogsReducer";
+import { profileReducer } from "./profileReducer";
 
 const store = {
     _state: {
@@ -29,26 +22,22 @@ const store = {
                 { message: "How are you?", id: 2 },
                 { message: "Youy", id: 3 },
             ],
+            newMessageText: "",
         },
     },
     _callSubscriber() {
         console.log("state has been changed");
     },
     dispatch(action) {
-        if (action.type === ADD_POST) {
-            const newPost = {
-                id: 1,
-                message: this._state.profilePage.newPostData,
-                likesCount: 0,
-            };
-            this._state.profilePage.postsData.push(newPost);
-            this._state.profilePage.newPostData = "";
-            this._callSubscriber(this._state);
-        }
-        if (action.type === UPDATE_NEW_POST_TEXT) {
-            this._state.profilePage.newPostData = action.newText;
-            this._callSubscriber(this._state);
-        }
+        this._state.profilePage = profileReducer(
+            this._state.profilePage,
+            action
+        );
+        this._state.dialogsPage = dialogsReducer(
+            this._state.dialogsPage,
+            action
+        );
+        this._callSubscriber(this._state);
     },
 
     subsribe(observer) {

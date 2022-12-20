@@ -2,9 +2,9 @@ import Header from "../Header";
 import NavBar from "../NavBar";
 import Profile from "../Profile";
 import "./App.scss";
-import { Dialogs } from "./../Dialogs/Dialogs";
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
+import { DialogsContainer } from "./../Dialogs/DialogsContainer";
 
 const App = ({ state: { dialogsPage, profilePage }, dispatch }) => {
     return (
@@ -24,12 +24,26 @@ const App = ({ state: { dialogsPage, profilePage }, dispatch }) => {
                             path="/profile"
                         />
                         <Route
-                            element={<Dialogs state={dialogsPage} />}
+                            element={
+                                <DialogsContainer
+                                    state={dialogsPage}
+                                    dispatch={dispatch}
+                                />
+                            }
                             path="/dialogs"
                         />
                         <Route
-                            element={<Dialogs state={dialogsPage} />}
+                            element={
+                                <DialogsContainer
+                                    state={dialogsPage}
+                                    dispatch={dispatch}
+                                />
+                            }
                             path="/dialogs/:id"
+                        />
+                        <Route
+                            path="*"
+                            element={<Navigate to="/profile" replace />}
                         />
                     </Routes>
                 </main>

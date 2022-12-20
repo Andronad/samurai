@@ -1,18 +1,23 @@
 import {
-    updateNewPostTextActionCreator,
-    addPostActionCreator,
-} from "../../../redux/state";
+    updateNewPostTextCreator,
+    addPostCreator,
+} from "../../../redux/profileReducer";
 import styles from "./MyPosts.module.scss";
 import { Post } from "./Post/Post";
 
-export const MyPosts = ({ postsData, dispatch, newPostData }) => {
-    const onChangeNewPost = e => {
-        dispatch(updateNewPostTextActionCreator(e.target.value));
+export const MyPosts = ({
+    addPost,
+    updateNewPostText,
+    postsData,
+    newPostData,
+}) => {
+    const onChangeNewPost = (e) => {
+        updateNewPostText(e.target.value);
     };
 
-    const onAdd = () => {
-        dispatch(addPostActionCreator());
-    };
+    // const onAdd = () => {
+    //     addPost();
+    // };
 
     return (
         <div className={styles.postsBlock}>
@@ -21,11 +26,11 @@ export const MyPosts = ({ postsData, dispatch, newPostData }) => {
                 <div>
                     <textarea onChange={onChangeNewPost} value={newPostData} />
                 </div>
-                <button onClick={onAdd}>Add post</button>
+                <button onClick={addPost}>Add post</button>
                 <button>Remove</button>
             </div>
             <div className={styles.posts}>
-                {postsData.map(e => (
+                {postsData.map((e) => (
                     <Post message={e.message} key={e.id} />
                 ))}
             </div>
