@@ -3,7 +3,7 @@ const UPDATE_NEW_POST_TEXT = "UPDATE_NEW_POST_TEXT";
 
 export const addPostCreator = () => ({ type: ADD_POST });
 
-export const updateNewPostTextCreator = (text) => ({
+export const updateNewPostTextCreator = text => ({
     type: UPDATE_NEW_POST_TEXT,
     newText: text,
 });
@@ -24,13 +24,17 @@ export const profileReducer = (state = initialProfileState, action) => {
                 message: state.newPostData,
                 likesCount: 0,
             };
-            state.postsData.push(newPost);
-            state.newPostData = "";
-            return state;
+            return {
+                ...state,
+                postsData: [...state.postsData, newPost],
+                newPostData: "",
+            };
         }
         case UPDATE_NEW_POST_TEXT: {
-            state.newPostData = action.newText;
-            return state;
+            return {
+                ...state,
+                newPostData: action.newText,
+            };
         }
         default: {
             return state;

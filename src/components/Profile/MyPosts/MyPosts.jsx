@@ -1,7 +1,3 @@
-import {
-    updateNewPostTextCreator,
-    addPostCreator,
-} from "../../../redux/profileReducer";
 import styles from "./MyPosts.module.scss";
 import { Post } from "./Post/Post";
 
@@ -11,13 +7,9 @@ export const MyPosts = ({
     postsData,
     newPostData,
 }) => {
-    const onChangeNewPost = (e) => {
+    const onChangeNewPost = e => {
         updateNewPostText(e.target.value);
     };
-
-    // const onAdd = () => {
-    //     addPost();
-    // };
 
     return (
         <div className={styles.postsBlock}>
@@ -30,7 +22,7 @@ export const MyPosts = ({
                 <button>Remove</button>
             </div>
             <div className={styles.posts}>
-                {postsData.map((e) => (
+                {postsData.map(e => (
                     <Post message={e.message} key={e.id} />
                 ))}
             </div>
