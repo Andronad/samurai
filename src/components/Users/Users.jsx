@@ -8,7 +8,9 @@ export const Users = ({
     unfollow,
     currentPage,
     setCurrentPage,
+    isLoading,
 }) => {
+    if (isLoading) return <div>Is Loading...</div>;
     return (
         <div>
             <div>

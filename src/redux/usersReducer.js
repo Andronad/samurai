@@ -2,12 +2,14 @@ const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
 const SET_USERS = "SET_USERS";
 const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
+const SET_LOADING = "SET_LOADING";
 
 const initialState = {
     users: [],
     pageSize: 5,
     totalCount: 20,
     currentPage: 1,
+    isLoading: false,
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -49,30 +51,41 @@ const usersReducer = (state = initialState, action) => {
                 currentPage: action.payload,
             };
         }
+        case SET_LOADING: {
+            return {
+                ...state,
+                isLoading: action.payload,
+            };
+        }
         default: {
             return state;
         }
     }
 };
 
-export const followCreator = id => ({
+export const follow = id => ({
     type: FOLLOW,
     payload: id,
 });
 
-export const unfollowCreator = id => ({
+export const unfollow = id => ({
     type: UNFOLLOW,
     payload: id,
 });
 
-export const serUsersCreator = users => ({
+export const setUsers = users => ({
     type: SET_USERS,
     payload: users,
 });
 
-export const setCurrentPageCreator = currentPage => ({
+export const setCurrentPage = currentPage => ({
     type: SET_CURRENT_PAGE,
     payload: currentPage,
+});
+
+export const setLoading = isLoading => ({
+    type: SET_LOADING,
+    payload: isLoading,
 });
 
 export default usersReducer;
