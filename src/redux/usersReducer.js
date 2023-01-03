@@ -1,9 +1,13 @@
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
 const SET_USERS = "SET_USERS";
+const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 
 const initialState = {
     users: [],
+    pageSize: 5,
+    totalCount: 20,
+    currentPage: 1,
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -36,7 +40,13 @@ const usersReducer = (state = initialState, action) => {
         case SET_USERS: {
             return {
                 ...state,
-                users: [...state.users, ...action.payload],
+                users: action.payload,
+            };
+        }
+        case SET_CURRENT_PAGE: {
+            return {
+                ...state,
+                currentPage: action.payload,
             };
         }
         default: {
@@ -58,6 +68,11 @@ export const unfollowCreator = id => ({
 export const serUsersCreator = users => ({
     type: SET_USERS,
     payload: users,
+});
+
+export const setCurrentPageCreator = currentPage => ({
+    type: SET_CURRENT_PAGE,
+    payload: currentPage,
 });
 
 export default usersReducer;

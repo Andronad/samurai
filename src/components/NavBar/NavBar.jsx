@@ -25,6 +25,16 @@ export const NavBar = () => {
                     Messages
                 </NavLink>
             </div>
+            <div className={styles.item}>
+                <NavLink
+                    to={"/users"}
+                    className={({ isActive }) =>
+                        isActive ? styles.activeLink : undefined
+                    }
+                >
+                    Users
+                </NavLink>
+            </div>
             <div className={styles.item}>News</div>
             <div className={styles.item}>Music</div>
             <div className={styles.item}>Settings</div>
