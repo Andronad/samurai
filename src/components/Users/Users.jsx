@@ -1,5 +1,6 @@
 import userImage from "../../assets/images/user.jpg";
 import styles from "./Users.module.scss";
+import { NavLink } from "react-router-dom";
 
 export const Users = ({
     pages,
@@ -33,11 +34,13 @@ export const Users = ({
                     <div key={u.id}>
                         <span>
                             <div>
-                                <img
-                                    src={u.photos.small || userImage}
-                                    alt="avatar"
-                                    className={styles.usersPhoto}
-                                />
+                                <NavLink to={`/profile/${u.id}`}>
+                                    <img
+                                        src={u.photos.small || userImage}
+                                        alt="avatar"
+                                        className={styles.usersPhoto}
+                                    />
+                                </NavLink>
                             </div>
                             <div>
                                 {u.followed ? (

@@ -4,8 +4,10 @@
     grid-template-rows: 60px 1fr;
     grid-template-columns: 1fr 5fr;
     margin: 0 30px;
+    min-height: 100%;
     .appContainer__content {
         grid-area: m;
         background-color: #a40;
+        flex: 0 1 auto;
     }
 }

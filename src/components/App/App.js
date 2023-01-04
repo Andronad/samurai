@@ -16,6 +16,7 @@ const App = () => {
                 <main className={"appContainer__content"}>
                     <Routes>
                         <Route element={<Profile />} path="/profile" />
+                        <Route element={<Profile />} path="/profile/:id" />
                         <Route element={<DialogsContainer />} path="/dialogs" />
                         <Route
                             element={<DialogsContainer />}
