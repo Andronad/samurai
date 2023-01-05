@@ -1,25 +1,19 @@
-import axios from "axios";
 import { useEffect } from "react";
-import { connect, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import { setUserProfile } from "./../../redux/profileReducer";
+import { getUserProfile } from "./../../redux/profileReducer";
 import { MyPostsContainer } from "./MyPosts/MyPostsContainer";
 import ProfileInfo from "./ProfileInfo";
 
-const Profile = ({ setUserProfile }) => {
+export const Profile = () => {
     const { id } = useParams();
+    const dispatch = useDispatch();
 
-    const userProfile = useSelector(state => state.profilePage.userProfile);
+    const userProfile = useSelector((state) => state.profilePage.userProfile);
 
     useEffect(() => {
-        axios
-            .get(
-                `https://social-network.samuraijs.com/api/1.0/profile/${
-                    id ? id : 2
-                }`
-            )
-            .then(response => setUserProfile(response.data));
-    }, [id, setUserProfile]);
+        dispatch(getUserProfile(id));
+    }, [id, dispatch]);
 
     if (!userProfile) return <div>Is Loading...</div>;
 
@@ -30,12 +24,3 @@ const Profile = ({ setUserProfile }) => {
         </div>
     );
 };
-
-const mapStateToProps = state => ({});
-
-const mapDispatchToProps = { setUserProfile };
-
-export const ProfileWithRedux = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Profile);

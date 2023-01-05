@@ -1,3 +1,5 @@
+import { usersAPI } from "./../api/api";
+
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
 const SET_USERS = "SET_USERS";
@@ -75,12 +77,12 @@ const usersReducer = (state = initialState, action) => {
     }
 };
 
-export const follow = (id) => ({
+export const followSuccess = (id) => ({
     type: FOLLOW,
     payload: id,
 });
 
-export const unfollow = (id) => ({
+export const unfollowSuccess = (id) => ({
     type: UNFOLLOW,
     payload: id,
 });
@@ -104,5 +106,33 @@ export const setFollowing = (isLoading, id) => ({
     type: SET_FOLLOWING,
     payload: { isLoading, id },
 });
+
+export const getUsers = (currentPage, pageSize) => (dispatch) => {
+    dispatch(setLoading(true));
+    usersAPI.getUsers(currentPage, pageSize).then((data) => {
+        dispatch(setUsers(data.items));
+        dispatch(setLoading(false));
+    });
+};
+
+export const follow = (id) => (dispatch) => {
+    dispatch(setFollowing(true, id));
+    usersAPI.follow(id).then((response) => {
+        if (response.data.resultCode === 0) {
+            dispatch(followSuccess(id));
+        }
+        dispatch(setFollowing(false, id));
+    });
+};
+
+export const unfollow = (id) => (dispatch) => {
+    dispatch(setFollowing(true, id));
+    usersAPI.unfollow(id).then((response) => {
+        if (response.data.resultCode === 0) {
+            dispatch(unfollowSuccess(id));
+        }
+        dispatch(setFollowing(false, id));
+    });
+};
 
 export default usersReducer;
