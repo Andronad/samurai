@@ -10,12 +10,13 @@ export const Users = ({
     currentPage,
     setCurrentPage,
     isLoading,
+    followingInProgress,
 }) => {
     if (isLoading) return <div>Is Loading...</div>;
     return (
         <div>
             <div>
-                {pages.map(e => (
+                {pages.map((e) => (
                     <span
                         key={e}
                         className={
@@ -29,7 +30,7 @@ export const Users = ({
                     </span>
                 ))}
             </div>
-            {users.map(u => {
+            {users.map((u) => {
                 return (
                     <div key={u.id}>
                         <span>
@@ -44,11 +45,21 @@ export const Users = ({
                             </div>
                             <div>
                                 {u.followed ? (
-                                    <button onClick={() => unfollow(u.id)}>
+                                    <button
+                                        disabled={followingInProgress.some(
+                                            (id) => id === u.id
+                                        )}
+                                        onClick={() => unfollow(u.id)}
+                                    >
                                         Unfollow
                                     </button>
                                 ) : (
-                                    <button onClick={() => follow(u.id)}>
+                                    <button
+                                        disabled={followingInProgress.some(
+                                            (id) => id === u.id
+                                        )}
+                                        onClick={() => follow(u.id)}
+                                    >
                                         Follow
                                     </button>
                                 )}

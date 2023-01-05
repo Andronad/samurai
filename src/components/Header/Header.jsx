@@ -9,7 +9,11 @@ export const Header = ({ isAuth, login }) => {
                 src="https://www.logodesign.net/images/home-page-logo-03.png"
             ></img>
             <div className={styles.loginBlock}>
-                {isAuth ? { login } : <NavLink to="/login">Login</NavLink>}
+                {isAuth ? (
+                    <div>{login}</div>
+                ) : (
+                    <NavLink to="/login">Login</NavLink>
+                )}
             </div>
         </header>
     );
