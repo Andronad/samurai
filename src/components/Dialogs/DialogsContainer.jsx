@@ -5,18 +5,18 @@ import {
 } from "./../../redux/dialogsReducer";
 import { Dialogs } from "./Dialogs";
 
-let mapStateToProps = state => {
+let mapStateToProps = (state) => {
     return {
         dialogsPage: state.dialogsPage,
     };
 };
 
-let mapDispatchToProps = dispatch => {
+let mapDispatchToProps = (dispatch) => {
     return {
         onSendMessageClick: () => {
             dispatch(sendMessageCreator());
         },
-        onNewMessageChange: e => {
+        onNewMessageChange: (e) => {
             const newText = e.target.value;
             dispatch(updateNewMessageTextCreator(newText));
         },
