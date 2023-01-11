@@ -1,8 +1,9 @@
-import { usersAPI } from "./../api/api";
+import { profileAPI } from "./../api/api";
 
 const ADD_POST = "ADD_POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE_NEW_POST_TEXT";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
+const SET_STATUS = "SET_STATUS";
 
 const initialProfileState = {
     postsData: [
@@ -11,6 +12,7 @@ const initialProfileState = {
     ],
     newPostData: "",
     userProfile: null,
+    status: "",
 };
 
 export const profileReducer = (state = initialProfileState, action) => {
@@ -39,6 +41,12 @@ export const profileReducer = (state = initialProfileState, action) => {
                 userProfile: action.payload,
             };
         }
+        case SET_STATUS: {
+            return {
+                ...state,
+                status: action.payload,
+            };
+        }
         default: {
             return state;
         }
@@ -47,18 +55,37 @@ export const profileReducer = (state = initialProfileState, action) => {
 
 export const addPostCreator = () => ({ type: ADD_POST });
 
-export const updateNewPostTextCreator = (text) => ({
+export const updateNewPostTextCreator = text => ({
     type: UPDATE_NEW_POST_TEXT,
     newText: text,
 });
 
-export const setUserProfile = (userProfile) => ({
+export const setUserProfile = userProfile => ({
     type: SET_USER_PROFILE,
     payload: userProfile,
 });
 
-export const getUserProfile = (id) => (dispatch) => {
-    usersAPI
-        .getProfile(id ? id : 2)
-        .then((response) => dispatch(setUserProfile(response.data)));
+export const setStatus = status => ({
+    type: SET_STATUS,
+    payload: status,
+});
+
+export const getUserProfile = id => dispatch => {
+    profileAPI
+        .getProfile(id)
+        .then(response => dispatch(setUserProfile(response.data)));
+};
+
+export const getStatus = id => dispatch => {
+    profileAPI
+        .getStatus(id)
+        .then(response => dispatch(setStatus(response.data)));
+};
+
+export const updateStatus = status => dispatch => {
+    profileAPI.updateStatus(status).then(response => {
+        if (response.data.resultCode === 0) {
+            dispatch(setStatus(status));
+        }
+    });
 };

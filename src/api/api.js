@@ -11,16 +11,25 @@ export const usersAPI = {
             .get("users", {
                 params: { page: currentPage, count: pageSize },
             })
-            .then((response) => response.data);
+            .then(response => response.data);
     },
-    follow: (id) => {
+    follow: id => {
         return apiInstance.post(`follow/${id}`);
     },
-    unfollow: (id) => {
+    unfollow: id => {
         return apiInstance.delete(`follow/${id}`);
     },
-    getProfile: (id) => {
+};
+
+export const profileAPI = {
+    getProfile: id => {
         return apiInstance.get(`profile/${id}`);
+    },
+    getStatus: id => {
+        return apiInstance.get(`profile/status/${id}`);
+    },
+    updateStatus: status => {
+        return apiInstance.put(`profile/status`, { status });
     },
 };
 
