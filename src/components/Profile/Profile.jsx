@@ -18,12 +18,16 @@ export const Profile = () => {
         dispatch(getStatus(searchedId));
     }, [id, dispatch, authorizedUserId]);
 
-    if (!userProfile) return <div>Is Loading...</div>;
-
     return (
-        <div>
-            <ProfileInfo profile={userProfile} status={status} />
-            <MyPostsContainer />
-        </div>
+        <>
+            {userProfile ? (
+                <div>
+                    <ProfileInfo profile={userProfile} status={status} />
+                    <MyPostsContainer />
+                </div>
+            ) : (
+                <div>Is Loading...</div>
+            )}
+        </>
     );
 };

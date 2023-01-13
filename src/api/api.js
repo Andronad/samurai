@@ -37,4 +37,10 @@ export const authAPI = {
     me: () => {
         return apiInstance.get("auth/me");
     },
+    login: (email, password, rememberMe) => {
+        return apiInstance.post("auth/login", { email, password, rememberMe });
+    },
+    logout: () => {
+        return apiInstance.delete("auth/login");
+    },
 };

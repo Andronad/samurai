@@ -1,7 +1,8 @@
 import { NavLink } from "react-router-dom";
 import styles from "./Header.module.scss";
+import { useDispatch } from "react-redux";
 
-export const Header = ({ isAuth, login }) => {
+export const Header = ({ isAuth, login, onLogout }) => {
     return (
         <header className={styles.header}>
             <img
@@ -10,7 +11,9 @@ export const Header = ({ isAuth, login }) => {
             ></img>
             <div className={styles.loginBlock}>
                 {isAuth ? (
-                    <div>{login}</div>
+                    <div className={styles.logElement} onClick={onLogout}>
+                        Logout
+                    </div>
                 ) : (
                     <NavLink to="/login">Login</NavLink>
                 )}

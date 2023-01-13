@@ -10,7 +10,7 @@ import Login from "./../Login";
 import { useSelector } from "react-redux";
 
 const App = () => {
-    const isAuth = useSelector((state) => state.auth.isAuth);
+    const isAuth = useSelector(state => state.auth.isAuth);
     return (
         <BrowserRouter>
             <div className={"appContainer"}>
@@ -30,7 +30,6 @@ const App = () => {
                                 path="/dialogs/:id"
                             />
                             <Route element={<UsersContainer />} path="/users" />
-                            <Route element={<Login />} path="/login" />
                             <Route
                                 path="*"
                                 element={<Navigate to="/profile" replace />}
@@ -39,6 +38,8 @@ const App = () => {
                     ) : (
                         <Routes>
                             <Route element={<Login />} path="/login" />
+                            <Route element={<UsersContainer />} path="/users" />
+                            <Route element={<Profile />} path="/profile/:id" />
                             <Route
                                 path="*"
                                 element={<Navigate to="/login" replace />}

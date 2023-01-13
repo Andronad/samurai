@@ -1,6 +1,7 @@
 import { authAPI } from "../api/api";
 
 const SET_AUTH_USER_DATA = "SET_AUTH_USER_DATA";
+const RESET_AUTH_USER_DATA = "RESET_AUTH_USER_DATA";
 
 const initialState = {
     userId: null,
@@ -18,6 +19,9 @@ const authReducer = (state = initialState, action) => {
                 isAuth: true,
             };
         }
+        case RESET_AUTH_USER_DATA: {
+            return initialState;
+        }
         default: {
             return state;
         }
@@ -29,11 +33,33 @@ export const setAuthUserData = (userId, email, login) => ({
     payload: { userId, email, login },
 });
 
-export const authMe = () => (dispatch) => {
-    authAPI.me().then((response) => {
+export const resetAuthUserData = () => ({
+    type: RESET_AUTH_USER_DATA,
+});
+
+export const authMe = () => dispatch => {
+    authAPI.me().then(response => {
         if (response.data.resultCode === 0) {
             const { id, login, email } = response.data.data;
             dispatch(setAuthUserData(id, email, login));
+        }
+    });
+};
+
+export const login =
+    (email, password, rememberMe = false) =>
+    dispatch => {
+        authAPI.login(email, password, rememberMe).then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(authMe());
+            }
+        });
+    };
+
+export const logout = () => dispatch => {
+    authAPI.logout().then(response => {
+        if (response.data.resultCode === 0) {
+            dispatch(resetAuthUserData());
         }
     });
 };

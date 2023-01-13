@@ -8,8 +8,10 @@
 
 .loginBlock {
     float: right;
-    a {
+    a,
+    .logElement {
         color: white;
         text-decoration: none;
+        cursor: pointer;
     }
 }
