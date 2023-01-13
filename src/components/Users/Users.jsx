@@ -1,6 +1,7 @@
 import userImage from "../../assets/images/user.jpg";
 import styles from "./Users.module.scss";
 import { NavLink } from "react-router-dom";
+import Loader from "../Loader";
 
 export const Users = ({
     pages,
@@ -12,11 +13,11 @@ export const Users = ({
     isLoading,
     followingInProgress,
 }) => {
-    if (isLoading) return <div>Is Loading...</div>;
+    if (isLoading) return <Loader />;
     return (
         <div>
             <div>
-                {pages.map((e) => (
+                {pages.map(e => (
                     <span
                         key={e}
                         className={
@@ -30,7 +31,7 @@ export const Users = ({
                     </span>
                 ))}
             </div>
-            {users.map((u) => {
+            {users.map(u => {
                 return (
                     <div key={u.id}>
                         <span>
@@ -47,7 +48,7 @@ export const Users = ({
                                 {u.followed ? (
                                     <button
                                         disabled={followingInProgress.some(
-                                            (id) => id === u.id
+                                            id => id === u.id
                                         )}
                                         onClick={() => unfollow(u.id)}
                                     >
@@ -56,7 +57,7 @@ export const Users = ({
                                 ) : (
                                     <button
                                         disabled={followingInProgress.some(
-                                            (id) => id === u.id
+                                            id => id === u.id
                                         )}
                                         onClick={() => follow(u.id)}
                                     >

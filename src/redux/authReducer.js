@@ -38,7 +38,7 @@ export const resetAuthUserData = () => ({
 });
 
 export const authMe = () => dispatch => {
-    authAPI.me().then(response => {
+    return authAPI.me().then(response => {
         if (response.data.resultCode === 0) {
             const { id, login, email } = response.data.data;
             dispatch(setAuthUserData(id, email, login));
@@ -47,11 +47,14 @@ export const authMe = () => dispatch => {
 };
 
 export const login =
-    (email, password, rememberMe = false) =>
+    (email, password, rememberMe = false, successCallback, unsuccessCallback) =>
     dispatch => {
         authAPI.login(email, password, rememberMe).then(response => {
             if (response.data.resultCode === 0) {
                 dispatch(authMe());
+                successCallback();
+            } else {
+                unsuccessCallback();
             }
         });
     };

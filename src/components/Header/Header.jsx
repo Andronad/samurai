@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import styles from "./Header.module.scss";
-import { useDispatch } from "react-redux";
 
 export const Header = ({ isAuth, login, onLogout }) => {
     return (

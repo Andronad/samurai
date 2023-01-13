@@ -1,7 +1,6 @@
-import { useEffect } from "react";
 import { Header } from "./Header";
 import { useDispatch, useSelector } from "react-redux";
-import { authMe, logout } from "./../../redux/authReducer";
+import { logout } from "./../../redux/authReducer";
 
 export const HeaderContainer = props => {
     const dispatch = useDispatch();
@@ -11,10 +10,6 @@ export const HeaderContainer = props => {
     const onLogout = () => {
         dispatch(logout());
     };
-
-    useEffect(() => {
-        dispatch(authMe());
-    }, [dispatch]);
 
     return (
         <Header {...props} isAuth={isAuth} login={login} onLogout={onLogout} />

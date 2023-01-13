@@ -1,16 +1,26 @@
-import Header from "../Header";
-import NavBar from "../NavBar";
-import Profile from "../Profile";
-import "./App.scss";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
+import { initializeApp } from "../../redux/appReducer";
+import Header from "../Header";
+import Loader from "../Loader";
+import NavBar from "../NavBar";
+import Profile from "../Profile";
 import { DialogsContainer } from "./../Dialogs/DialogsContainer";
-import UsersContainer from "./../Users/UsersContainer";
 import Login from "./../Login";
-import { useSelector } from "react-redux";
+import UsersContainer from "./../Users/UsersContainer";
+import "./App.scss";
 
 const App = () => {
     const isAuth = useSelector(state => state.auth.isAuth);
+    const isInitialized = useSelector(state => state.appReducer.isInitialized);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(initializeApp());
+    }, [dispatch]);
+    if (!isInitialized) return <Loader />;
     return (
         <BrowserRouter>
             <div className={"appContainer"}>

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
+import Loader from "../Loader";
 import { getUserProfile, getStatus } from "./../../redux/profileReducer";
 import { MyPostsContainer } from "./MyPosts/MyPostsContainer";
 import ProfileInfo from "./ProfileInfo";
@@ -26,7 +27,7 @@ export const Profile = () => {
                     <MyPostsContainer />
                 </div>
             ) : (
-                <div>Is Loading...</div>
+                <Loader />
             )}
         </>
     );

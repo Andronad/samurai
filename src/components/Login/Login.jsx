@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "./../../redux/authReducer";
-import { Navigate } from "react-router";
+import styles from "./Login.module.scss";
 
 const LoginForm = () => {
     const {
@@ -13,15 +14,21 @@ const LoginForm = () => {
         mode: "onBlur",
     });
 
+    const [loginError, setLoginError] = useState();
+
     const dispatch = useDispatch();
 
     const onSubmit = data => {
-        dispatch(login(data.login, data.password, data.rememberMe));
-        reset();
+        dispatch(
+            login(data.login, data.password, data.rememberMe, reset, () =>
+                setLoginError("Email or password is incorrect")
+            )
+        );
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            <div className={styles.error}>{loginError}</div>
             <div>
                 <input
                     placeholder="Login"
@@ -29,7 +36,7 @@ const LoginForm = () => {
                         required: "Login is required",
                     })}
                 />
-                <div style={{ color: "red" }}>{errors?.login?.message}</div>
+                <div className={styles.error}>{errors?.login?.message}</div>
             </div>
             <div>
                 <input
@@ -39,7 +46,7 @@ const LoginForm = () => {
                         required: "Password is required",
                     })}
                 />
-                <div style={{ color: "red" }}>{errors?.password?.message}</div>
+                <div className={styles.error}>{errors?.password?.message}</div>
             </div>
             <label>
                 <input type="checkbox" {...register("rememberMe")} />
