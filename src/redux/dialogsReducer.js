@@ -1,16 +1,6 @@
-const UPDATE_NEW_MESSAGE_TEXT = "UPDATE_NEW_MESSAGE_TEXT";
-const SEND_MESSAGE = "SEND_MESSAGE";
+import { createSlice } from "@reduxjs/toolkit";
 
-export const updateNewMessageTextCreator = text => ({
-    type: UPDATE_NEW_MESSAGE_TEXT,
-    newText: text,
-});
-
-export const sendMessageCreator = text => ({
-    type: SEND_MESSAGE,
-});
-
-const initialDialogsReducer = {
+const initialState = {
     dialogsData: [
         { name: "Andrei", id: 1 },
         { name: "Stas", id: 2 },
@@ -25,27 +15,20 @@ const initialDialogsReducer = {
     newMessageText: "",
 };
 
-export const dialogsReducer = (state = initialDialogsReducer, action) => {
-    switch (action.type) {
-        case UPDATE_NEW_MESSAGE_TEXT: {
-            return {
-                ...state,
-                newMessageText: action.newText,
-            };
-        }
-        case SEND_MESSAGE: {
-            const newMessage = {
-                id: 6,
-                message: state.newMessageText,
-            };
-            return {
-                ...state,
-                newMessageText: "",
-                messages: [...state.messages, newMessage],
-            };
-        }
-        default: {
-            return state;
-        }
-    }
-};
+const dialogsSlice = createSlice({
+    name: "dialogs",
+    initialState,
+    reducers: {
+        updateNewMessageText: (state, action) => {
+            state.newMessageText = action.payload;
+        },
+        sendMessage: state => {
+            state.messages.push({ id: 6, message: state.newMessageText });
+            state.newMessageText = "";
+        },
+    },
+});
+
+export const { sendMessage, updateNewMessageText } = dialogsSlice.actions;
+
+export default dialogsSlice.reducer;

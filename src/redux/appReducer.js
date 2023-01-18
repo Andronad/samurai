@@ -1,33 +1,25 @@
 import { authMe } from "./authReducer";
-
-const SET_INITIALIZED = "SET_INITIALIZED";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     isInitialized: false,
 };
 
-const appReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case SET_INITIALIZED: {
-            return {
-                ...state,
-                isInitialized: action.payload,
-            };
-        }
-        default: {
-            return state;
-        }
-    }
-};
-
-export const setInitialized = isInitialized => ({
-    type: SET_INITIALIZED,
-    payload: isInitialized,
+const appSlice = createSlice({
+    name: "app",
+    initialState,
+    reducers: {
+        setInitialized: (state, action) => {
+            state.isInitialized = action.payload;
+        },
+    },
 });
+
+export const { setInitialized } = appSlice.actions;
 
 export const initializeApp = () => dispatch => {
     dispatch(setInitialized(false));
     dispatch(authMe()).then(() => dispatch(setInitialized(true)));
 };
 
-export default appReducer;
+export default appSlice.reducer;

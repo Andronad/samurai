@@ -1,12 +1,20 @@
 import { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import {
+    getCurrentPage,
+    getFollowingInProgress,
+    getIsLoading,
+    getPageSize,
+    getTotalCount,
+    getUsers as getUsersSelector,
+} from "./../../redux/selectors/users-selectors";
+import {
     follow,
-    setUsers,
     setCurrentPage,
-    unfollow,
-    setLoading,
     setFollowing,
+    setLoading,
+    setUsers,
+    unfollow,
     getUsers,
 } from "./../../redux/usersReducer";
 import Users from "./index";
@@ -51,13 +59,13 @@ const UsersContainer = ({
     );
 };
 
-const mapStateToProps = (state) => ({
-    users: state.usersPage.users,
-    pageSize: state.usersPage.pageSize,
-    totalCount: state.usersPage.totalCount,
-    currentPage: state.usersPage.currentPage,
-    isLoading: state.usersPage.isLoading,
-    followingInProgress: state.usersPage.followingInProgress,
+const mapStateToProps = state => ({
+    users: getUsersSelector(state),
+    pageSize: getPageSize(state),
+    totalCount: getTotalCount(state),
+    currentPage: getCurrentPage(state),
+    isLoading: getIsLoading(state),
+    followingInProgress: getFollowingInProgress(state),
 });
 
 const mapDispatchToProps = {

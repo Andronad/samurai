@@ -1,7 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit";
 import { authAPI } from "../api/api";
-
-const SET_AUTH_USER_DATA = "SET_AUTH_USER_DATA";
-const RESET_AUTH_USER_DATA = "RESET_AUTH_USER_DATA";
 
 const initialState = {
     userId: null,
@@ -10,38 +8,33 @@ const initialState = {
     isAuth: false,
 };
 
-const authReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case SET_AUTH_USER_DATA: {
-            return {
-                ...state,
-                ...action.payload,
-                isAuth: true,
-            };
-        }
-        case RESET_AUTH_USER_DATA: {
-            return initialState;
-        }
-        default: {
-            return state;
-        }
-    }
-};
-
-export const setAuthUserData = (userId, email, login) => ({
-    type: SET_AUTH_USER_DATA,
-    payload: { userId, email, login },
+const authSlice = createSlice({
+    name: "auth",
+    initialState,
+    reducers: {
+        setAuthUserData: (state, action) => {
+            const { userId, email, login } = action.payload;
+            state.userId = userId;
+            state.email = email;
+            state.login = login;
+            state.isAuth = true;
+        },
+        resetAuthUserData: (state, action) => {
+            state.userId = null;
+            state.email = null;
+            state.login = null;
+            state.isAuth = false;
+        },
+    },
 });
 
-export const resetAuthUserData = () => ({
-    type: RESET_AUTH_USER_DATA,
-});
+const { setAuthUserData, resetAuthUserData } = authSlice.actions;
 
 export const authMe = () => dispatch => {
     return authAPI.me().then(response => {
         if (response.data.resultCode === 0) {
             const { id, login, email } = response.data.data;
-            dispatch(setAuthUserData(id, email, login));
+            dispatch(setAuthUserData({ userId: id, email, login }));
         }
     });
 };
@@ -67,4 +60,4 @@ export const logout = () => dispatch => {
     });
 };
 
-export default authReducer;
+export default authSlice.reducer;

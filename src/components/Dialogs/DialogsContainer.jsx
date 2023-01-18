@@ -1,24 +1,24 @@
 import { connect } from "react-redux";
 import {
-    sendMessageCreator,
-    updateNewMessageTextCreator,
+    sendMessage,
+    updateNewMessageText,
 } from "./../../redux/dialogsReducer";
 import { Dialogs } from "./Dialogs";
 
-let mapStateToProps = (state) => {
+let mapStateToProps = state => {
     return {
         dialogsPage: state.dialogsPage,
     };
 };
 
-let mapDispatchToProps = (dispatch) => {
+let mapDispatchToProps = dispatch => {
     return {
         onSendMessageClick: () => {
-            dispatch(sendMessageCreator());
+            dispatch(sendMessage());
         },
-        onNewMessageChange: (e) => {
+        onNewMessageChange: e => {
             const newText = e.target.value;
-            dispatch(updateNewMessageTextCreator(newText));
+            dispatch(updateNewMessageText(newText));
         },
     };
 };
