@@ -30,34 +30,31 @@ const authSlice = createSlice({
 
 const { setAuthUserData, resetAuthUserData } = authSlice.actions;
 
-export const authMe = () => dispatch => {
-    return authAPI.me().then(response => {
-        if (response.data.resultCode === 0) {
-            const { id, login, email } = response.data.data;
-            dispatch(setAuthUserData({ userId: id, email, login }));
-        }
-    });
+export const authMe = () => async dispatch => {
+    const response = await authAPI.me();
+    if (response.data.resultCode === 0) {
+        const { id, login, email } = response.data.data;
+        dispatch(setAuthUserData({ userId: id, email, login }));
+    }
 };
 
 export const login =
     (email, password, rememberMe = false, successCallback, unsuccessCallback) =>
-    dispatch => {
-        authAPI.login(email, password, rememberMe).then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(authMe());
-                successCallback();
-            } else {
-                unsuccessCallback();
-            }
-        });
+    async dispatch => {
+        const response = await authAPI.login(email, password, rememberMe);
+        if (response.data.resultCode === 0) {
+            dispatch(authMe());
+            successCallback();
+        } else {
+            unsuccessCallback();
+        }
     };
 
-export const logout = () => dispatch => {
-    authAPI.logout().then(response => {
-        if (response.data.resultCode === 0) {
-            dispatch(resetAuthUserData());
-        }
-    });
+export const logout = () => async dispatch => {
+    const response = authAPI.logout();
+    if (response.data.resultCode === 0) {
+        dispatch(resetAuthUserData());
+    }
 };
 
 export default authSlice.reducer;

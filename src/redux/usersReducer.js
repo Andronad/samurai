@@ -14,21 +14,14 @@ const usersSlice = createSlice({
     name: "users",
     initialState,
     reducers: {
-        followSuccess: (state, action) => {
-            const newUsers = state.users.map(user => {
-                return {
-                    ...user,
-                    followed: user.id === action.payload ? true : user.followed,
-                };
-            });
-            state.users = newUsers;
-        },
-        unfollowSuccess: (state, action) => {
+        toggleFollow: (state, action) => {
             const newUsers = state.users.map(user => {
                 return {
                     ...user,
                     followed:
-                        user.id === action.payload ? false : user.followed,
+                        user.id === action.payload
+                            ? !user.followed
+                            : user.followed,
                 };
             });
             state.users = newUsers;
@@ -53,40 +46,37 @@ const usersSlice = createSlice({
 });
 
 export const {
-    followSuccess,
-    unfollowSuccess,
+    toggleFollow,
     setUsers,
     setCurrentPage,
     setLoading,
     setFollowing,
 } = usersSlice.actions;
 
-export const getUsers = (currentPage, pageSize) => dispatch => {
+export const getUsers = (currentPage, pageSize) => async dispatch => {
     dispatch(setLoading(true));
-    usersAPI.getUsers(currentPage, pageSize).then(data => {
-        dispatch(setUsers(data.items));
-        dispatch(setLoading(false));
-    });
+    const data = await usersAPI.getUsers(currentPage, pageSize);
+    dispatch(setUsers(data.items));
+    dispatch(setLoading(false));
 };
 
-export const follow = id => dispatch => {
+const followUnfollowLogic = async (dispatch, id, apiMethod) => {
     dispatch(setFollowing(true, id));
-    usersAPI.follow(id).then(response => {
-        if (response.data.resultCode === 0) {
-            dispatch(followSuccess(id));
-        }
-        dispatch(setFollowing(false, id));
-    });
+    const response = await apiMethod(id);
+    if (response.data.resultCode === 0) {
+        dispatch(toggleFollow(id));
+    }
+    dispatch(setFollowing(false, id));
+};
+
+export const follow = id => async dispatch => {
+    const apiMethod = usersAPI.follow;
+    followUnfollowLogic(dispatch, id, apiMethod);
 };
 
 export const unfollow = id => dispatch => {
-    dispatch(setFollowing(true, id));
-    usersAPI.unfollow(id).then(response => {
-        if (response.data.resultCode === 0) {
-            dispatch(unfollowSuccess(id));
-        }
-        dispatch(setFollowing(false, id));
-    });
+    const apiMethod = usersAPI.unfollow;
+    followUnfollowLogic(dispatch, id, apiMethod);
 };
 
 export default usersSlice.reducer;
