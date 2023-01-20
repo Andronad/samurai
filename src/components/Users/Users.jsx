@@ -1,7 +1,6 @@
-import userImage from "../../assets/images/user.jpg";
-import styles from "./Users.module.scss";
-import { NavLink } from "react-router-dom";
 import Loader from "../Loader";
+import { Paginator } from "./Paginator";
+import { User } from "./User";
 
 export const Users = ({
     pages,
@@ -16,69 +15,20 @@ export const Users = ({
     if (isLoading) return <Loader />;
     return (
         <div>
-            <div>
-                {pages.map(e => (
-                    <span
-                        key={e}
-                        className={
-                            currentPage === e
-                                ? styles.selectedPage
-                                : styles.page
-                        }
-                        onClick={() => setCurrentPage(e)}
-                    >
-                        {e}
-                    </span>
-                ))}
-            </div>
-            {users.map(u => {
-                return (
-                    <div key={u.id}>
-                        <span>
-                            <div>
-                                <NavLink to={`/profile/${u.id}`}>
-                                    <img
-                                        src={u.photos.small || userImage}
-                                        alt="avatar"
-                                        className={styles.usersPhoto}
-                                    />
-                                </NavLink>
-                            </div>
-                            <div>
-                                {u.followed ? (
-                                    <button
-                                        disabled={followingInProgress.some(
-                                            id => id === u.id
-                                        )}
-                                        onClick={() => unfollow(u.id)}
-                                    >
-                                        Unfollow
-                                    </button>
-                                ) : (
-                                    <button
-                                        disabled={followingInProgress.some(
-                                            id => id === u.id
-                                        )}
-                                        onClick={() => follow(u.id)}
-                                    >
-                                        Follow
-                                    </button>
-                                )}
-                            </div>
-                        </span>
-                        <span>
-                            <span>
-                                <div>{u.name}</div>
-                                <div>{u.status}</div>
-                            </span>
-                            <span>
-                                <div>{"u.location.country"}</div>
-                                <div>{"u.location.city"}</div>
-                            </span>
-                        </span>
-                    </div>
-                );
-            })}
+            <Paginator
+                pages={pages}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                isLoading={isLoading}
+            />
+            {users.map((u) => (
+                <User
+                    user={u}
+                    follow={follow}
+                    unfollow={unfollow}
+                    followingInProgress={followingInProgress}
+                />
+            ))}
         </div>
     );
 };
